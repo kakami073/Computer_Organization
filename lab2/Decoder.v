@@ -2,7 +2,8 @@
 //--------------------------------------------------------------------------------
 //Version:     1
 //--------------------------------------------------------------------------------
-//Writer:      0416214/徐��//----------------------------------------------
+//Writer:      0416214/徐瑞亨
+//----------------------------------------------
 //Date:        2017/04/24
 //----------------------------------------------
 //Description: 
@@ -40,20 +41,16 @@ reg            Branch_o;
 always@(instr_op_i)
 begin
 	case(instr_op_i)
-		6'h0:
-			ALU_op_o<=3'b010;
-		6'h4:	//beq
+		6'h4:
 			ALU_op_o<=3'b001;
-		6'h5:	//bne
-			ALU_op_o<=3'bxxx;	//???
-		6'h8:	//addi
+		6'h8:
 			ALU_op_o<=3'b010;
-		6'h9:	//sltiu
-			ALU_op_o<=3'b010;
-		6'hd:	//ori
-			ALU_op_o<=3'bxxx;	//???
-		6'hf:	//lui
-			ALU_op_o<=3'bxxx;	//???
+		6'h9:
+			ALU_op_o<=3'b011;
+		6'h13:
+			ALU_op_o<=3'b100;
+		6'h15:
+			ALU_op_o<=3'b101;
 		default:
 			ALU_op_o<=3'b000;
 	endcase
@@ -69,7 +66,7 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i!=6'hf)
+	if(instr_op_i!=6'h15)
 		RegDst_o<=1;
 	else
 		RegDst_o<=0;	//0 when load
