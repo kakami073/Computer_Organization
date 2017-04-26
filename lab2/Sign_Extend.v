@@ -22,6 +22,11 @@ output  [32-1:0] data_o;
 reg     [32-1:0] data_o;
 
 //Sign extended
-          
+always@(*)
+begin
+	data_o[15:0]<=data_i[15:0];
+	for(i=16;i<32;i=i+1)
+		data_o[i]<=data_i[15];
+end
 endmodule      
      
