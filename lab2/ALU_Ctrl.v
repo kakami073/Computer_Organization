@@ -2,8 +2,7 @@
 //--------------------------------------------------------------------------------
 //Version:     1
 //--------------------------------------------------------------------------------
-//Writer:       0416214/徐瑞亨
-//----------------------------------------------
+//Writer:       0416214/徐��//----------------------------------------------
 //Date:        2017/04/24
 //----------------------------------------------
 //Description: 
@@ -30,37 +29,37 @@ reg        [4-1:0] ALUCtrl_o;
 //Select exact operation
 always@(*)
 begin
-	if(ALUOp_i==0)
+	if(ALUOp_i==3'b010)
 	case(funct_i)
 		6'h20:
-			ALUCtrl_o<=	//add
+			ALUCtrl_o<=4'b0010;	//add
 		6'h22:
-			ALUCtrl_o<=	//sub
+			ALUCtrl_o<=4'b0110;	//sub
 		6'h24:
-			ALUCtrl_o<=	//and
+			ALUCtrl_o<=4'b0000;	//and
 		6'h25:
-			ALUCtrl_o<=	//or
+			ALUCtrl_o<=4'b0001;	//or
 		6'h2a:
-			ALUCtrl_o<=	//slt
+			ALUCtrl_o<=4'b0111;	//slt
 		6'h3:
-			ALUCtrl_o<=	//sra
+			ALUCtrl_o<=4'bxxxx;	//sra	//not yet
 		6'h7:
-			ALUCtrl_o<=	//srav
+			ALUCtrl_o<=4'bxxxx;	//srav	//not yet
 		default:
 			ALUCtrl_o<=4'b0;
 	endcase
 	else
 	case(ALUOp_i)
 		3'b001:
-			ALUCtrl_o<=	//beq
-		3'b010:
-			ALUCtrl_o<=	//addi
-		3'b011:
-			ALUCtrl_o<=	//sltiu
+			ALUCtrl_o<=4'b0110;	//beq bne
 		3'b100:
-			ALUCtrl_o<=	//ori
+			ALUCtrl_o<=4'b0010;	//addi
 		3'b101:
-			ALUCtrl_o<=	//lui
+			ALUCtrl_o<=4'b0111;	//sltiu
+		3'b110:
+			ALUCtrl_o<=4'b0001;	//ori
+		3'b111:
+			ALUCtrl_o<=4'b0010;	//lui
 		default:
 			ALUCtrl_o<=4'b0;
 	endcase

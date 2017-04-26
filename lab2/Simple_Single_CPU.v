@@ -11,12 +11,13 @@
 module Simple_Single_CPU(
         clk_i,
 		rst_i
+		,test //////////////////////////////////////
 		);
 		
 //I/O port
 input         clk_i;
 input         rst_i;
-
+output		 [31:0]test;///////////////////////////////////////
 //Internal Signles
 wire [31:0] PC_in;
 wire [31:0] PC_out;
@@ -35,7 +36,9 @@ wire [3:0] AC_out;
 wire [31:0] ALU_2in;
 wire [31:0] ALU_result;
 wire [31:0] Adder2_out;
-
+wire [31:0] SL_two;
+wire [31:0] test;//////////////////////////////////////////////
+assign test=ALU_result;////////////////////////////////////////////////
 //Greate componentes
 ProgramCounter PC(
         .clk_i(clk_i),      
@@ -59,7 +62,7 @@ MUX_2to1 #(.size(5)) Mux_Write_Reg(
         .data0_i(IM_out[20:16]),
         .data1_i(IM_out[15:11]),
         .select_i(D_RegDst),
-        .data_o(WR_reg_in)
+        .data_o(RF_wreg_in)
         );	
 		
 Reg_File RF(
