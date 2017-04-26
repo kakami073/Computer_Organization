@@ -1,0 +1,6 @@
+1.ALU
+
+Advance Instructions
+2.Need a sign shifter to complete sra/srav.
+3.Need a zero-extend shifter to complete ori.
+4.What ALU_op and ALUCtrl should be (3'bxxx now in decoder).

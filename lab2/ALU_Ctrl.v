@@ -29,7 +29,7 @@ reg        [4-1:0] ALUCtrl_o;
 //Select exact operation
 always@(*)
 begin
-	if(ALUOp_i==0)
+	if(ALUOp_i==3'b010)
 	case(funct_i)
 		6'h20:
 			ALUCtrl_o<=4'b0010;	//add
@@ -42,9 +42,9 @@ begin
 		6'h2a:
 			ALUCtrl_o<=4'b0111;	//slt
 		6'h3:
-			ALUCtrl_o<=4'b0;	//sra	//not yet
+			ALUCtrl_o<=4'bxxxx;	//sra	//not yet
 		6'h7:
-			ALUCtrl_o<=4'b0;	//srav	//not yet
+			ALUCtrl_o<=4'bxxxx;	//srav	//not yet
 		default:
 			ALUCtrl_o<=4'b0;
 	endcase
@@ -59,7 +59,7 @@ begin
 		3'b100:
 			ALUCtrl_o<=4'b0001;	//ori
 		3'b101:
-			ALUCtrl_o<=4'b0;	//lui	//notyet
+			ALUCtrl_o<=4'b0001;	//lui
 		default:
 			ALUCtrl_o<=4'b0;
 	endcase
