@@ -61,7 +61,7 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i==6'b0)
+	if(instr_op_i==6'b0||instr_op_i==6'b000100||instr_op_i==6'b000101)
 		ALUSrc_o<=0;
 	else
 		ALUSrc_o<=1;
@@ -69,7 +69,7 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i!=6'hf)
+	if(instr_op_i==6'h0)
 		RegDst_o<=1;
 	else
 		RegDst_o<=0;	//0 when load

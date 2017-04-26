@@ -11,13 +11,11 @@
 module Simple_Single_CPU(
         clk_i,
 		rst_i
-		,test //////////////////////////////////////
 		);
 		
 //I/O port
 input         clk_i;
 input         rst_i;
-output		 [31:0]test;///////////////////////////////////////
 //Internal Signles
 wire [31:0] PC_in;
 wire [31:0] PC_out;
@@ -37,9 +35,10 @@ wire [31:0] ALU_2in;
 wire [31:0] ALU_result;
 wire [31:0] Adder2_out;
 wire [31:0] SL_two;
-wire [31:0] test;//////////////////////////////////////////////
-assign test=ALU_result;////////////////////////////////////////////////
+wire ALU_zero;
+wire jump;
 //Greate componentes
+assign jump=D_Branch&ALU_zero;
 ProgramCounter PC(
         .clk_i(clk_i),      
 	    .rst_i (rst_i),     
@@ -126,7 +125,7 @@ Shift_Left_Two_32 Shifter(
 MUX_2to1 #(.size(32)) Mux_PC_Source(
         .data0_i(PC_plus4),
         .data1_i(Adder2_out),
-        .select_i(D_Branch&ALU_zero),
+        .select_i(jump),
         .data_o(PC_in)
         );	
 
