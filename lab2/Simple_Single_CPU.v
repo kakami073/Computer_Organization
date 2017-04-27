@@ -38,7 +38,7 @@ wire [31:0] SL_two;
 wire ALU_zero;
 wire jump;
 //Greate componentes
-assign jump=D_Branch&ALU_zero;
+assign jump=(D_Branch&(~ALU_zero)&IM_out[26]) | ((~D_Branch)&ALU_zero&IM_out[26]);
 ProgramCounter PC(
         .clk_i(clk_i),      
 	    .rst_i (rst_i),     
