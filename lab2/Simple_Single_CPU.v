@@ -22,6 +22,7 @@ wire [31:0] PC_out;
 wire [31:0] PC_plus4;
 wire [31:0] IM_out;
 wire [31:0] SE_out;
+wire [31:0] ZF_out;
 wire D_RegWrite;
 wire [2:0] D_ALU_op;
 wire D_ALUSrc;
@@ -33,6 +34,7 @@ wire [31:0] RT_out;
 wire [3:0] AC_out;
 wire [31:0] ALU_2in;
 wire [31:0] ALU_result;
+wire [31:0] Ful_result;
 wire [31:0] Adder2_out;
 wire [31:0] SL_two;
 wire ALU_zero;
@@ -70,7 +72,7 @@ Reg_File RF(
         .RSaddr_i(IM_out[25:21]) ,  
         .RTaddr_i(IM_out[20:16]) ,  
         .RDaddr_i(RF_wreg_in) ,  
-        .RDdata_i(ALU_result)  , 
+        .RDdata_i(Ful_result)  , 
         .RegWrite_i (D_RegWrite),
         .RSdata_o(RS_out) ,  
         .RTdata_o(RT_out)   
@@ -95,6 +97,18 @@ Sign_Extend SE(
         .data_i(IM_out[15:0]),
         .data_o(SE_out)
         );
+
+Zero_Filled ZF(
+        .data_i(IM_out[15:0]),
+        .data_o(ZF_out)
+        );
+
+MUX_2to1 #(.size(32)) Mux_FuRslt(
+        .data0_i(ALU_result),
+        .data1_i(ZF_out),
+        .select_i(IM_out[27]),
+        .data_o(Ful_result)
+        );	
 
 MUX_2to1 #(.size(32)) Mux_ALUSrc(
         .data0_i(RT_out),
