@@ -132,7 +132,7 @@ ALU ALU(
 
 MUX_2to1 #(.size(5)) Mux_shamt(
         .data0_i(IM_out[10:6]),
-        .data1_i(IM_out[25:21]),
+        .data1_i(RS_out[4:0]),
         .select_i(IM_out[2]),
         .data_o(Shamt)
         );	
