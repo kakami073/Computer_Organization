@@ -42,9 +42,9 @@ begin
 		6'h2a:
 			ALUCtrl_o<=4'b0111;	//slt
 		6'h3:
-			ALUCtrl_o<=4'b1000;	//sra	//not yet
+			ALUCtrl_o<=4'b1000;	//sra
 		6'h7:
-			ALUCtrl_o<=4'b1000;	//srav	//not yet
+			ALUCtrl_o<=4'b1000;	//srav
 		default:
 			ALUCtrl_o<=4'b0;
 	endcase

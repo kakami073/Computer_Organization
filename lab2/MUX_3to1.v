@@ -18,9 +18,9 @@ reg [31:0] data_o;
 always@(*)
 begin
 	case(select_i)
-		4'b1000:
+		4'b1000: // sra srav
 			data_o <= data0_i;
-		4'b1100:
+		4'b1100: // lui
 			data_o <= data1_i;
 		default:
 			data_o <= data2_i;
