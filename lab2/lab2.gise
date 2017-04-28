@@ -38,7 +38,7 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1493303463" xil_pn:in_ck="7722156391274037499" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1493303463">
+    <transform xil_pn:end_ts="1493341511" xil_pn:in_ck="5220587827087446230" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1493341511">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="ALU.v"/>
@@ -47,8 +47,10 @@
       <outfile xil_pn:name="Decoder.v"/>
       <outfile xil_pn:name="Instr_Memory.v"/>
       <outfile xil_pn:name="MUX_2to1.v"/>
+      <outfile xil_pn:name="MUX_3to1.v"/>
       <outfile xil_pn:name="ProgramCounter.v"/>
       <outfile xil_pn:name="Reg_File.v"/>
+      <outfile xil_pn:name="ShiftRighter.v"/>
       <outfile xil_pn:name="Shift_Left_Two_32.v"/>
       <outfile xil_pn:name="Sign_Extend.v"/>
       <outfile xil_pn:name="Simple_Single_CPU.v"/>
@@ -67,27 +69,36 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1493303465" xil_pn:in_ck="7722156391274037499" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1493303465">
+    <transform xil_pn:end_ts="1493341383" xil_pn:in_ck="5220587827087446230" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1493341383">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="ALU.v"/>
       <outfile xil_pn:name="ALU_Ctrl.v"/>
       <outfile xil_pn:name="Adder.v"/>
       <outfile xil_pn:name="Decoder.v"/>
       <outfile xil_pn:name="Instr_Memory.v"/>
       <outfile xil_pn:name="MUX_2to1.v"/>
+      <outfile xil_pn:name="MUX_3to1.v"/>
       <outfile xil_pn:name="ProgramCounter.v"/>
       <outfile xil_pn:name="Reg_File.v"/>
+      <outfile xil_pn:name="ShiftRighter.v"/>
       <outfile xil_pn:name="Shift_Left_Two_32.v"/>
       <outfile xil_pn:name="Sign_Extend.v"/>
       <outfile xil_pn:name="Simple_Single_CPU.v"/>
       <outfile xil_pn:name="Test_Bench.v"/>
       <outfile xil_pn:name="Zero_Filled.v"/>
     </transform>
-    <transform xil_pn:end_ts="1493303467" xil_pn:in_ck="7722156391274037499" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="4248203717376029071" xil_pn:start_ts="1493303465">
+    <transform xil_pn:end_ts="1493341385" xil_pn:in_ck="5220587827087446230" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="4248203717376029071" xil_pn:start_ts="1493341383">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
       <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="TestBench_beh.prj"/>
       <outfile xil_pn:name="TestBench_isim_beh.exe"/>
@@ -96,9 +107,12 @@
       <outfile xil_pn:name="isim.log"/>
       <outfile xil_pn:name="xilinxsim.ini"/>
     </transform>
-    <transform xil_pn:end_ts="1493303563" xil_pn:in_ck="7142743428940672367" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-3913207672986833550" xil_pn:start_ts="1493303563">
+    <transform xil_pn:end_ts="1493341385" xil_pn:in_ck="7142743428940672367" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-3913207672986833550" xil_pn:start_ts="1493341385">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
       <outfile xil_pn:name="TestBench_isim_beh.wdb"/>
       <outfile xil_pn:name="isim.cmd"/>
       <outfile xil_pn:name="isim.log"/>

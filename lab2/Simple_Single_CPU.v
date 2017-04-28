@@ -39,6 +39,8 @@ wire [31:0] Adder2_out;
 wire [31:0] SL_two;
 wire ALU_zero;
 wire jump;
+wire [4:0] Shamt;
+wire [31:0] Shifter_out;
 //Greate componentes
 assign jump=(D_Branch&(~ALU_zero)&IM_out[26]) | ((~D_Branch)&ALU_zero&IM_out[26]);
 ProgramCounter PC(
@@ -103,10 +105,11 @@ Zero_Filled ZF(
         .data_o(ZF_out)
         );
 
-MUX_2to1 #(.size(32)) Mux_FuRslt(
-        .data0_i(ALU_result),
+MUX_3to1 Mux_FuRslt(
+        .data0_i(Shifter_out),
         .data1_i(ZF_out),
-        .select_i(IM_out[27]),
+        .data2_i(ALU_result),
+        .select_i(AC_out),
         .data_o(Ful_result)
         );	
 
@@ -124,6 +127,25 @@ ALU ALU(
 	    .result_o(ALU_result),
 		.zero_o(ALU_zero)
 	    );
+
+//------ shifter --------
+
+MUX_2to1 #(.size(5)) Mux_shamt(
+        .data0_i(IM_out[10:6]),
+        .data1_i(IM_out[25:21]),
+        .select_i(IM_out[2]),
+        .data_o(Shamt)
+        );	
+
+ShiftRighter ShiftRighter(
+				.src_i(RT_out),
+				.shamt_i(Shamt),
+				.shifter_o(Shifter_out)
+				);
+
+
+
+//-----------------------
 		
 Adder Adder2(
         .src1_i(PC_plus4),     
