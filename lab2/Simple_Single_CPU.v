@@ -2,7 +2,7 @@
 //--------------------------------------------------------------------------------
 //Version:     1
 //--------------------------------------------------------------------------------
-//Writer:      
+//Writer:      0312012 0416214
 //----------------------------------------------
 //Date:        
 //----------------------------------------------
@@ -28,6 +28,10 @@ wire [2:0] D_ALU_op;
 wire D_ALUSrc;
 wire D_RegDst;
 wire D_Branch;
+wire D_BranchType;
+wire D_Jump;
+wire D_MemRead;
+wire D_MemWrite;
 wire [4:0] RF_wreg_in;
 wire [31:0] RS_out;
 wire [31:0] RT_out;
@@ -38,11 +42,18 @@ wire [31:0] Ful_result;
 wire [31:0] Adder2_out;
 wire [31:0] SL_two;
 wire ALU_zero;
-wire jump;
-wire [4:0] Shamt;
-wire [31:0] Shifter_out;
+//wire jump;
+wire NOT_ZERO;
+wire equal_less_than;
+wire [31:0] SJ_out;
+wire [31:0] Branch_address;
+
+assign NOT_ZERO=~ALU_zero;
+assign equal_less_than=ALU_zero|ALU_result[31];
+//wire [4:0] Shamt;
+//wire [31:0] Shifter_out;
 //Greate componentes
-assign jump=(D_Branch&(~ALU_zero)&IM_out[26]) | ((D_Branch)&ALU_zero&~IM_out[26]);
+//assign jump=(D_Branch&(~ALU_zero)&IM_out[26]) | ((D_Branch)&ALU_zero&~IM_out[26]);
 ProgramCounter PC(
         .clk_i(clk_i),      
 	    .rst_i (rst_i),     
@@ -86,7 +97,11 @@ Decoder Decoder(
 	    .ALU_op_o(D_ALU_op),   
 	    .ALUSrc_o(D_ALUSrc),   
 	    .RegDst_o(D_RegDst),   
-		.Branch_o(D_Branch)   
+		.Branch_o(D_Branch),
+		.BranchType_o(D_BranchType),
+		.Jump_o(D_Jump),
+		.MemRead_o(D_MemRead),
+		.MemWrite_o(D_MemWrite)
 	    );
 
 ALU_Ctrl AC(
@@ -99,16 +114,16 @@ Sign_Extend SE(
         .data_i(IM_out[15:0]),
         .data_o(SE_out)
         );
-
+/*
 Zero_Filled ZF(
         .data_i(IM_out[15:0]),
         .data_o(ZF_out)
-        );
+        );*/
 
 MUX_3to1 Mux_FuRslt(
-        .data0_i(Shifter_out),
-        .data1_i(ZF_out),
-        .data2_i(ALU_result),
+        .data0_i(ALU_result),
+        .data1_i(DM_out),
+        .data2_i(SE_out),
         .select_i(AC_out),
         .data_o(Ful_result)
         );	
@@ -129,7 +144,7 @@ ALU ALU(
 	    );
 
 //------ shifter --------
-
+/*
 MUX_2to1 #(.size(5)) Mux_shamt(
         .data0_i(IM_out[10:6]),
         .data1_i(RS_out[4:0]),
@@ -144,7 +159,7 @@ ShiftRighter ShiftRighter(
 				);
 
 
-
+*/
 //-----------------------
 		
 Adder Adder2(
@@ -161,9 +176,40 @@ Shift_Left_Two_32 Shifter(
 MUX_2to1 #(.size(32)) Mux_PC_Source(
         .data0_i(PC_plus4),
         .data1_i(Adder2_out),
-        .select_i(jump),
-        .data_o(PC_in)
+        .select_i(D_Branch),
+        .data_o(Branch_address)
         );	
+
+//Data Memory
+Data_Memory Data_Memory(
+		.clk_i(clk_i),
+		.addr_i(ALU_result),
+		.data_i(RT_out),
+		.MemRead_i(D_MemRead),
+		.MemWrite_i(D_MemWrite),
+		.data_o(DM_out)
+		);
+
+MUX_4to1 #(.size(1)) Branch_Type(
+               .data0_i(ALU_zero),
+               .data1_i(equal_less_than),
+					.data2_i(ALU_result[31]),
+					.data3_i(NOT_ZERO),
+               .select_i(D_BranchType),
+               .data_o(BT_out)
+               );
+					
+Shift_Left_Two_32 Shifter_Jump(
+        .data_i({6'b000000,IM_out[25:0]}),
+        .data_o(SJ_out)
+        );
+
+MUX_2to1 #(.size(32)) Mux_Jump(
+        .data0_i({PC_plus4[31:28],SJ_out[27:0]}),
+        .data1_i(Adder2_out),
+        .select_i(D_Jump),
+        .data_o(PC_in)
+        );
 
 endmodule
 		  

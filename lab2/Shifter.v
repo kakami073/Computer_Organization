@@ -1,5 +1,4 @@
 `timescale 1ns / 1ps
-// Writers: 		0312012 0416214
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -19,18 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module ShiftRighter(
-		src_i,
-		shamt_i,
-		shifter_o
+module Shifter(
     );
-
-//I/O ports
-input  signed [32-1:0] src_i;
-input  [5-1:0]  shamt_i;
-output signed [32-1:0] shifter_o;
-
-assign shifter_o = src_i >>> shamt_i;
 
 
 endmodule

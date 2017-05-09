@@ -1,3 +1,4 @@
+// wirter: 0312012 0416214
 module MUX_3to1(
 	data0_i,
 	data1_i,
