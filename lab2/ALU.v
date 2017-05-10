@@ -48,6 +48,8 @@ begin
 			result_o<=src1_i<src2_i?1:0;
 		4'b0101:
 			result_o<=~(src1_i|src2_i);
+		4'b1000:
+			result_o<=src1_i*src2_i;
 		default:
 			result_o<=32'b0;
 	endcase

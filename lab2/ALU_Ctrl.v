@@ -42,27 +42,23 @@ begin
 			ALUCtrl_o<=4'b0001;	//or
 		6'h2a:
 			ALUCtrl_o<=4'b0111;	//slt
-		6'h3:
-			ALUCtrl_o<=4'b1000;	//sra
-		6'h7:
-			ALUCtrl_o<=4'b1000;	//srav
+		6'h18:
+			ALUCtrl_o<=4'b1000; //mul
+		6'h8:
+			ALUCtrl_o<=4'b1111; //jr -> don't care
 		default:
-			ALUCtrl_o<=4'b0;
+			ALUCtrl_o<=4'b1111; //don't care
 	endcase
 	else
 	case(ALUOp_i)
 		3'b001:
-			ALUCtrl_o<=4'b0110;	//beq bne
+			ALUCtrl_o<=4'b0110;	//beq bne bltz ble
 		3'b100:
-			ALUCtrl_o<=4'b0010;	//addi
+			ALUCtrl_o<=4'b0010;	//addi lui lw sw
 		3'b101:
 			ALUCtrl_o<=4'b0111;	//sltiu
-		3'b110:
-			ALUCtrl_o<=4'b0001;	//ori
-		3'b111:
-			ALUCtrl_o<=4'b1100;	//lui
 		default:
-			ALUCtrl_o<=4'b0;
+			ALUCtrl_o<=4'b0000; // don't care
 	endcase
 end
 

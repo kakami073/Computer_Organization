@@ -57,28 +57,38 @@ reg   				 MemToReg_o;
 always@(instr_op_i)
 begin
 	case(instr_op_i)
-		6'h0:
+		6'h0: // R-type instr
 			ALU_op_o<=3'b010;
+		6'h1: //bltz
+			ALU_op_o<=3'b001;
+		6'h2: //j
+			ALU_op_o<=3'b000 // don't care
+		6'h3: //jal
+			ALU_op_o<=3'b000 // don't care
 		6'h4:	//beq
 			ALU_op_o<=3'b001;
 		6'h5:	//bne
+			ALU_op_o<=3'b001;
+		6'h6: //ble
 			ALU_op_o<=3'b001;
 		6'h8:	//addi
 			ALU_op_o<=3'b100;
 		6'h9:	//sltiu
 			ALU_op_o<=3'b101;
-		6'hd:	//ori
-			ALU_op_o<=3'b110;
-		6'hf:	//lui
-			ALU_op_o<=3'b111;
+		6'hf: //lui
+			ALU_op_o<=3'b100; // same as addi
+		6'h23: //lw
+			ALU_op_o<=3'b100;
+		6'h2b: //sw
+			ALU_op_o<=3'b100;
 		default:
-			ALU_op_o<=3'b000;
+			ALU_op_o<=3'b000; // don't care
 	endcase
 end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i==6'b0||instr_op_i==6'b000100||instr_op_i==6'b000101)
+	if(instr_op_i[5:3]==3'b000) // include R-type, branch, J-type(don't care) instrctions
 		ALUSrc_o<=0;
 	else
 		ALUSrc_o<=1;
@@ -86,15 +96,17 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i==6'h0)
+	if(instr_op_i == 6'b000000) // R-type
 		RegDst_o<=1;
+	else if(instr_op_i[5] == 1'b1 || instr_op_i[5:3] == 3'b001) // load instr, imm instr
+		RegDst_o<=0;
 	else
-		RegDst_o<=0;	//0 when load
+		RegDst_o<=2;
 end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i==6'h4||instr_op_i==6'h5)
+	if(instr_op_i[5:2] == 4'b0001) // branch instr
 		Branch_o<=1;
 	else
 		Branch_o<=0;
@@ -102,17 +114,17 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i==6'h4||instr_op_i==6'h5)
+	if(instr_op_i[5:2] == 4'b0001 || instr_op_i == 6'b101011 || instr_op_i == 6'b000010 || instr_op_i == )
 		RegWrite_o<=0;
 	else
-		RegWrite_o<=1;
+		RegWrite_o<=1; // debug: can't identify jr(R-type)
 end
 
 always@(BranchType_o)
 begin
-	case(instr_op_i[31:26])
+	case(instr_op_i)
 		6'd4: 
-			BranchType_o <= 0; // bne
+			BranchType_o <= 0; // beq
 		6'd6:
 			BranchType_o <= 1; // ble
 		6'd1:
@@ -123,15 +135,17 @@ end
 
 always@(Jump_o)
 begin
-	if(instr_op_i[31:26] == 6'd2 || instr_op_i[31:26] == 6'd3) // how to implement 'jr'?
+	if(instr_op_i[5:1] == 5'b00001) // J-type
 		Jump_o <= 1;
+	else if(instr_op_i) // debug: can't idientify jr(R-type)
+		Jump_o <= 2;
 	else
 		Jump_o <= 0;
 end
 
 always@(MemRead_o)
 begin
-	if(instr_op_i[31:26] == 6'd35) // if 'lw' 
+	if(instr_op_i == 6'd35) // lw 
 		MemRead_o <= 1;
 	else
 		MemRead_o <= 0;
@@ -139,7 +153,7 @@ end
 
 always@(MemWrite_o,)
 begin
-	if(instr_op_i[31:26] == 6'd43) // if 'sw' 
+	if(instr_op_i[31:26] == 6'd43) // sw
 		MemWrite_o <= 1;
 	else
 		MemWrite_o <= 0;
@@ -147,8 +161,10 @@ end
 	
 always@(MemToReg_o)
 begin
-	if(instr_op_i[31:26] == 6'd35) // if 'lw' 
+	if(instr_op_i[31:26] == 6'd35) // lw 
 		MemToReg_o <= 1;
+	else if(instr_op_i == 6'd3) // jal
+		MemToReg_o <= 2;
 	else
 		MemToReg_o <= 0;
 	
