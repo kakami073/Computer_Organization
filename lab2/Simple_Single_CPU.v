@@ -26,13 +26,13 @@ wire [31:0] ZF_out;
 wire D_RegWrite;
 wire [2:0] D_ALU_op;
 wire D_ALUSrc;
-wire D_RegDst;
+wire [1:0] D_RegDst;//2-bit
 wire D_Branch;
 wire D_BranchType;
-wire D_Jump;
+wire [1:0] D_Jump;//2-bit
 wire D_MemRead;
 wire D_MemWrite;
-wire [1:0] D_MemToReg;
+wire [1:0] D_MemToReg;//2-bit
 wire [4:0] RF_wreg_in;
 wire [31:0] RS_out;
 wire [31:0] RT_out;
@@ -73,9 +73,10 @@ Instr_Memory IM(
 	    .instr_o(IM_out)    
 	    );
 
-MUX_2to1 #(.size(5)) Mux_Write_Reg(
+MUX_3to1 #(.size(5)) Mux_Write_Reg(
         .data0_i(IM_out[20:16]),
         .data1_i(IM_out[15:11]),
+		  .data2_i(5'b11111),
         .select_i(D_RegDst),
         .data_o(RF_wreg_in)
         );	
@@ -122,10 +123,10 @@ Zero_Filled ZF(
         .data_o(ZF_out)
         );*/
 
-MUX_3to1 Mux_FuRslt(
+MUX_3to1 #(.size(32)) Mux_FuRslt(
         .data0_i(ALU_result),
         .data1_i(DM_out),
-        .data2_i(SE_out),
+        .data2_i(PC_plus4),
         .select_i(D_MemToReg),
         .data_o(Ful_result)
         );	
@@ -206,9 +207,10 @@ Shift_Left_Two_32 Shifter_Jump(
         .data_o(SJ_out)
         );
 
-MUX_2to1 #(.size(32)) Mux_Jump(
+MUX_3to1 #(.size(32)) Mux_Jump(
         .data0_i(Adder2_out),
         .data1_i({PC_plus4[31:28],SJ_out[27:0]}),
+		  .data2_i(RS_out),
         .select_i(D_Jump),
         .data_o(PC_in)
         );
