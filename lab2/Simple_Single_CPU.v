@@ -32,6 +32,7 @@ wire D_BranchType;
 wire D_Jump;
 wire D_MemRead;
 wire D_MemWrite;
+wire [1:0] D_MemToReg;
 wire [4:0] RF_wreg_in;
 wire [31:0] RS_out;
 wire [31:0] RT_out;
@@ -101,7 +102,8 @@ Decoder Decoder(
 		.BranchType_o(D_BranchType),
 		.Jump_o(D_Jump),
 		.MemRead_o(D_MemRead),
-		.MemWrite_o(D_MemWrite)
+		.MemWrite_o(D_MemWrite),
+		.MemToReg_o(D_MemToReg)
 	    );
 
 ALU_Ctrl AC(
@@ -124,7 +126,7 @@ MUX_3to1 Mux_FuRslt(
         .data0_i(ALU_result),
         .data1_i(DM_out),
         .data2_i(SE_out),
-        .select_i(AC_out),
+        .select_i(D_MemToReg),
         .data_o(Ful_result)
         );	
 
@@ -205,8 +207,8 @@ Shift_Left_Two_32 Shifter_Jump(
         );
 
 MUX_2to1 #(.size(32)) Mux_Jump(
-        .data0_i({PC_plus4[31:28],SJ_out[27:0]}),
-        .data1_i(Adder2_out),
+        .data0_i(Adder2_out),
+        .data1_i({PC_plus4[31:28],SJ_out[27:0]}),
         .select_i(D_Jump),
         .data_o(PC_in)
         );
