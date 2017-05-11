@@ -15,7 +15,7 @@ input  [size-1:0] data2_i;
 input  [1:0]  select_i;
 output [size-1:0] data_o;
 
-reg [31:0] data_o;
+reg [size-1:0] data_o;
 
 always@(*)
 begin

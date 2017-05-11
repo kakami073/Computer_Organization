@@ -12,7 +12,8 @@
 module ALU_Ctrl(
           funct_i,
           ALUOp_i,
-          ALUCtrl_o
+          ALUCtrl_o,
+			 JrCtrl_o
           );
           
 //I/O ports 
@@ -20,9 +21,11 @@ input      [6-1:0] funct_i;
 input      [3-1:0] ALUOp_i;
 
 output     [4-1:0] ALUCtrl_o;    
+output	JrCtrl_o;
      
 //Internal Signals
 reg        [4-1:0] ALUCtrl_o;
+reg		JrCtrl_o;
 
 //Parameter
 
@@ -45,7 +48,7 @@ begin
 		6'h18:
 			ALUCtrl_o<=4'b1000; //mul
 		6'h8:
-			ALUCtrl_o<=4'b1111; //jr -> don't care
+			ALUCtrl_o<=4'b0000; //jr -> use and to avoid changing r0 
 		default:
 			ALUCtrl_o<=4'b1111; //don't care
 	endcase
@@ -60,6 +63,14 @@ begin
 		default:
 			ALUCtrl_o<=4'b0000; // don't care
 	endcase
+end
+
+always@(*)
+begin
+	if(ALUOp_i==3'b010&&funct_i==6'b001000)
+		JrCtrl_o<=1;
+	else
+		JrCtrl_o<=0;
 end
 
 endmodule     

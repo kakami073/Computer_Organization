@@ -29,26 +29,26 @@ input  [6-1:0] instr_op_i;
 output         RegWrite_o;
 output [3-1:0] ALU_op_o;
 output         ALUSrc_o;
-output         RegDst_o;
+output [1:0]   RegDst_o;
 output         Branch_o;
-output 			   BranchType_o;
+output [1:0]	   BranchType_o;
 output 				 Jump_o;
 output 				 MemRead_o;
 output 				 MemWrite_o;
-output 				 MemToReg_o;
+output [1:0]		 MemToReg_o;
  
 
 //Internal Signals
 reg    [3-1:0] ALU_op_o;
 reg            ALUSrc_o;
 reg            RegWrite_o;
-reg            RegDst_o;
+reg    [1:0]   RegDst_o;
 reg            Branch_o;
-reg   			   BranchType_o;
+reg    [1:0]	   BranchType_o;
 reg   				 Jump_o;
 reg   				 MemRead_o;
 reg   				 MemWrite_o;
-reg   				 MemToReg_o;
+reg    [1:0]		 MemToReg_o;
 
 //Parameter
 
@@ -62,9 +62,9 @@ begin
 		6'h1: //bltz
 			ALU_op_o<=3'b001;
 		6'h2: //j
-			ALU_op_o<=3'b000 // don't care
+			ALU_op_o<=3'b000; // don't care
 		6'h3: //jal
-			ALU_op_o<=3'b000 // don't care
+			ALU_op_o<=3'b000; // don't care
 		6'h4:	//beq
 			ALU_op_o<=3'b001;
 		6'h5:	//bne
@@ -114,13 +114,13 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i[5:2] == 4'b0001 || instr_op_i == 6'b101011 || instr_op_i == 6'b000010 || instr_op_i == )
+	if(instr_op_i[5:2] == 4'b0001 || instr_op_i == 6'b101011 || instr_op_i == 6'b000010)
 		RegWrite_o<=0;
 	else
 		RegWrite_o<=1; // debug: can't identify jr(R-type)
 end
 
-always@(BranchType_o)
+always@(instr_op_i)
 begin
 	case(instr_op_i)
 		6'd4: 
@@ -131,19 +131,18 @@ begin
 			BranchType_o <= 2; // bltz
 		default:
 			BranchType_o <= 3; // bnez(bne)
+	endcase
 end
 
-always@(Jump_o)
+always@(instr_op_i)//jr debug complete
 begin
 	if(instr_op_i[5:1] == 5'b00001) // J-type
 		Jump_o <= 1;
-	else if(instr_op_i) // debug: can't idientify jr(R-type)
-		Jump_o <= 2;
 	else
 		Jump_o <= 0;
 end
 
-always@(MemRead_o)
+always@(instr_op_i)
 begin
 	if(instr_op_i == 6'd35) // lw 
 		MemRead_o <= 1;
@@ -151,7 +150,7 @@ begin
 		MemRead_o <= 0;
 end
 
-always@(MemWrite_o,)
+always@(instr_op_i)
 begin
 	if(instr_op_i[31:26] == 6'd43) // sw
 		MemWrite_o <= 1;
@@ -159,7 +158,7 @@ begin
 		MemWrite_o <= 0;
 end
 	
-always@(MemToReg_o)
+always@(instr_op_i)
 begin
 	if(instr_op_i[31:26] == 6'd35) // lw 
 		MemToReg_o <= 1;

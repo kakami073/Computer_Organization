@@ -28,7 +28,7 @@ wire [2:0] D_ALU_op;
 wire D_ALUSrc;
 wire [1:0] D_RegDst;//2-bit
 wire D_Branch;
-wire D_BranchType;
+wire [1:0] D_BranchType;
 wire [1:0] D_Jump;//2-bit
 wire D_MemRead;
 wire D_MemWrite;
@@ -48,6 +48,7 @@ wire NOT_ZERO;
 wire equal_less_than;
 wire [31:0] SJ_out;
 wire [31:0] Branch_address;
+wire [31:0] DM_out;
 
 assign NOT_ZERO=~ALU_zero;
 assign equal_less_than=ALU_zero|ALU_result[31];
@@ -69,7 +70,7 @@ Adder Adder1(
 	    );
 	
 Instr_Memory IM(
-        .pc_addr_i(PC_out),  
+        .addr_i(PC_out),  
 	    .instr_o(IM_out)    
 	    );
 
@@ -101,7 +102,7 @@ Decoder Decoder(
 	    .RegDst_o(D_RegDst),   
 		.Branch_o(D_Branch),
 		.BranchType_o(D_BranchType),
-		.Jump_o(D_Jump),
+		.Jump_o(D_Jump[0]),
 		.MemRead_o(D_MemRead),
 		.MemWrite_o(D_MemWrite),
 		.MemToReg_o(D_MemToReg)
@@ -110,7 +111,8 @@ Decoder Decoder(
 ALU_Ctrl AC(
         .funct_i(IM_out[5:0]),   
         .ALUOp_i(D_ALU_op),   
-        .ALUCtrl_o(AC_out) 
+        .ALUCtrl_o(AC_out),
+		  .JrCtrl_o(D_Jump[1])
         );
 	
 Sign_Extend SE(
