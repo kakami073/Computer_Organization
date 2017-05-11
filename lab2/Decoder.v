@@ -106,18 +106,22 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i[5:2] == 4'b0001) // branch instr
+	case(instr_op_i)
+	6'd4,6'd6,6'd1,6'd5:
 		Branch_o<=1;
-	else
+	default:
 		Branch_o<=0;
+	endcase
 end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i[5:2] == 4'b0001 || instr_op_i == 6'b101011 || instr_op_i == 6'b000010)
+	case(instr_op_i)
+	6'd4,6'd6,6'd1,6'd5,6'd43,6'd2:
 		RegWrite_o<=0;
-	else
-		RegWrite_o<=1; // debug: can't identify jr(R-type)
+	default:
+		RegWrite_o<=1;
+	endcase
 end
 
 always@(instr_op_i)

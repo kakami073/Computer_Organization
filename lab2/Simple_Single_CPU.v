@@ -10,8 +10,7 @@
 //--------------------------------------------------------------------------------
 module Simple_Single_CPU(
         clk_i,
-		rst_i,
-		test
+		rst_i
 		);
 		
 //I/O port
@@ -50,10 +49,6 @@ wire equal_less_than;
 wire [31:0] SJ_out;
 wire [31:0] Branch_address;
 wire [31:0] DM_out;
-/////////////////////////////////////debug////////////////////////////////////////////////////////////////////
-output wire [31:0] test;
-assign test=IM_out;
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 assign NOT_ZERO=~ALU_zero;
 assign equal_less_than=ALU_zero|ALU_result[31];
 //wire [4:0] Shamt;
