@@ -152,7 +152,7 @@ end
 
 always@(instr_op_i)
 begin
-	if(instr_op_i[31:26] == 6'd43) // sw
+	if(instr_op_i == 6'd43) // sw
 		MemWrite_o <= 1;
 	else
 		MemWrite_o <= 0;
@@ -160,7 +160,7 @@ end
 	
 always@(instr_op_i)
 begin
-	if(instr_op_i[31:26] == 6'd35) // lw 
+	if(instr_op_i == 6'd35) // lw 
 		MemToReg_o <= 1;
 	else if(instr_op_i == 6'd3) // jal
 		MemToReg_o <= 2;

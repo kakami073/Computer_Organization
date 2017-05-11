@@ -10,7 +10,8 @@
 //--------------------------------------------------------------------------------
 module Simple_Single_CPU(
         clk_i,
-		rst_i
+		rst_i,
+		test
 		);
 		
 //I/O port
@@ -49,7 +50,10 @@ wire equal_less_than;
 wire [31:0] SJ_out;
 wire [31:0] Branch_address;
 wire [31:0] DM_out;
-
+/////////////////////////////////////debug////////////////////////////////////////////////////////////////////
+output wire [31:0] test;
+assign test=ALU_result;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 assign NOT_ZERO=~ALU_zero;
 assign equal_less_than=ALU_zero|ALU_result[31];
 //wire [4:0] Shamt;
@@ -210,7 +214,7 @@ Shift_Left_Two_32 Shifter_Jump(
         );
 
 MUX_3to1 #(.size(32)) Mux_Jump(
-        .data0_i(Adder2_out),
+        .data0_i(Branch_address),
         .data1_i({PC_plus4[31:28],SJ_out[27:0]}),
 		  .data2_i(RS_out),
         .select_i(D_Jump),
