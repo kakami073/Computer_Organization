@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-`define CYCLE_TIME 50			
+`define CYCLE_TIME 800			
 
 module TestBench;
   reg Clk, Start;

@@ -10,7 +10,7 @@
 //--------------------------------------------------------------------------------
 
 `define CYCLE_TIME 10			
-`define END_COUNT 25
+`define END_COUNT 180
 module TestBench;
 
 //Internal Signals

@@ -52,7 +52,7 @@ wire [31:0] Branch_address;
 wire [31:0] DM_out;
 /////////////////////////////////////debug////////////////////////////////////////////////////////////////////
 output wire [31:0] test;
-assign test=ALU_result;
+assign test=IM_out;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 assign NOT_ZERO=~ALU_zero;
 assign equal_less_than=ALU_zero|ALU_result[31];
@@ -185,7 +185,7 @@ Shift_Left_Two_32 Shifter(
 MUX_2to1 #(.size(32)) Mux_PC_Source(
         .data0_i(PC_plus4),
         .data1_i(Adder2_out),
-        .select_i(D_Branch),
+        .select_i(D_Branch&BT_out),
         .data_o(Branch_address)
         );	
 
