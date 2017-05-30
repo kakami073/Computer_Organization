@@ -16,8 +16,8 @@ module Decoder(
 	ALUSrc_o,
 	RegDst_o,
 	Branch_o,
-	BranchType_o,
-	Jump_o,
+	//BranchType_o,
+	//Jump_o,
 	MemRead_o,
 	MemWrite_o,
 	MemToReg_o
@@ -31,8 +31,8 @@ output [3-1:0] ALU_op_o;
 output         ALUSrc_o;
 output [1:0]   RegDst_o;
 output         Branch_o;
-output [1:0]	   BranchType_o;
-output 				 Jump_o;
+//output [1:0]	   BranchType_o;
+//output 				 Jump_o;
 output 				 MemRead_o;
 output 				 MemWrite_o;
 output [1:0]		 MemToReg_o;
@@ -42,13 +42,13 @@ output [1:0]		 MemToReg_o;
 reg    [3-1:0] ALU_op_o;
 reg            ALUSrc_o;
 reg            RegWrite_o;
-reg    [1:0]   RegDst_o;
+reg    		   RegDst_o;
 reg            Branch_o;
-reg    [1:0]	   BranchType_o;
-reg   				 Jump_o;
+//reg    [1:0]	   BranchType_o;
+//reg   				 Jump_o;
 reg   				 MemRead_o;
 reg   				 MemWrite_o;
-reg    [1:0]		 MemToReg_o;
+reg    				 MemToReg_o;
 
 //Parameter
 
@@ -98,10 +98,10 @@ always@(instr_op_i)
 begin
 	if(instr_op_i == 6'b000000) // R-type
 		RegDst_o<=1;
-	else if(instr_op_i[5] == 1'b1 || instr_op_i[5:3] == 3'b001) // load instr, imm instr
+	else /*if(instr_op_i[5] == 1'b1 || instr_op_i[5:3] == 3'b001) // load instr, imm instr*/
 		RegDst_o<=0;
-	else
-		RegDst_o<=2;
+	/*else
+		RegDst_o<=2;*/
 end
 
 always@(instr_op_i)
@@ -123,7 +123,7 @@ begin
 		RegWrite_o<=1;
 	endcase
 end
-
+/*
 always@(instr_op_i)
 begin
 	case(instr_op_i)
@@ -145,7 +145,7 @@ begin
 	else
 		Jump_o <= 0;
 end
-
+*/
 always@(instr_op_i)
 begin
 	if(instr_op_i == 6'd35) // lw 
@@ -166,8 +166,8 @@ always@(instr_op_i)
 begin
 	if(instr_op_i == 6'd35) // lw 
 		MemToReg_o <= 1;
-	else if(instr_op_i == 6'd3) // jal
-		MemToReg_o <= 2;
+	/*else if(instr_op_i == 6'd3) // jal
+		MemToReg_o <= 2;*/
 	else
 		MemToReg_o <= 0;
 	
